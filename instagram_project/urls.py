@@ -30,7 +30,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('registration/', RegisterView.as_view(), name='register'),
     path('make/registration/', MakeRegisterView.as_view(), name='make_register'),
-    path('login/', LoginerView.as_view(), name='login'),
+    path('', LoginerView.as_view(), name='login'),
     path('make/login/', MakeLoginerView.as_view(), name='make_login'),
     path('make/logout/', MakeLogoutView.as_view(), name='make_logout'),
     path('profile/<int:pk>/', ProfileView.as_view(), name='profile'),
