@@ -338,19 +338,19 @@ function getCookie(name) {
                                     <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all; width: 136px;">
                                         <div class="owl-item active" style="width: 62.857px; margin-right: 5px;">
                                             <div class="item_s">
-                                                <img src="https://i.ibb.co/3S1hjKR/account1.jpg' %}">
+                                                <img src="https://i.ibb.co/3S1hjKR/account1.jpg">
                                                 <p>zineb</p>
                                             </div>
                                         </div>
                                         <div class="owl-item " style="width: 62.857px; margin-right: 5px;">
                                             <div class="item_s">
-                                                <img src="https://i.ibb.co/kD6tj9T/account2.jpg' %}">
+                                                <img src="https://i.ibb.co/kD6tj9T/account2.jpg">
                                                 <p>ikram</p>
                                             </div>
                                         </div>
                                         <div class="owl-item " style="width: 62.857px; margin-right: 5px;">
                                             <div class="item_s">
-                                                <img src="https://i.ibb.co/kD6tj9T/account2.jpg' %}">
+                                                <img src="https://i.ibb.co/kD6tj9T/account2.jpg">
                                                 <p>ikram</p>
                                             </div>
                                         </div>
@@ -423,28 +423,46 @@ function getCookie(name) {
                                                 <a class="bold" href="{% url 'profile' pk=item.pk %}">{{ item.user.username }}</a> {{item.descriptions}}
                                             </p>
 
-                                            <!-- Чекбокс для управления видимостью -->
-                                            <input type="checkbox" id="toggle-comments-{{ item.id }}" class="toggle-comments" name="checkbox">
+                                            <!-- Чекбокс для скрытия/показа комментариев -->
+                                            <input type="checkbox" id="toggle-comments-{{ item.id }}" class="toggle-comments" class="checkbox-toggle">
                                             <label for="toggle-comments-{{ item.id }}" class="gray">Посмотреть все {{ item.comments.count }} комментариев</label>
 
                                             <!-- Контейнер для комментариев -->
-                                            {% if item.is_checked %}
                                             <div class="comments-container" id="comments-container-{{ item.id }}">
                                                 {% for comment in item.comments.all %}
                                                     <div class="comment-item">
                                                         {% if user.avatar %}
-                                                            <img src="{{ comment.user.avatar.url }}" alt="{{ comment.user.first_name }}'s avatar" class="comment-avatar" style="height: 40px; width: 40px; border-radius:100%; border: 4px black;">
+                                                            <img src="{{ comment.author.avatar.url }}" alt="{{ comment.user.first_name }}'s avatar" class="comment-avatar">
                                                         {% else %}
-                                                            <img src="{% static 'images/profile_img.jpg' %}" alt="{{ comment.user.first_name }}'s avatar" class="comment-avatar" style="height: 40px; width: 40px; border-radius:100%; border: 4px black;">
-                                                        <p>
-                                                            <a class="bold" href="#">{{ comment.user.first_name }}</a> {{ comment.text }}
-                                                        </p>
+                                                            <img src="{% static 'images/anonim.png' %}" alt="{{ comment.user.first_name }}'s avatar" class="comment-avatar">
                                                         {% endif %}
+                                                        <p>
+                                                            <a class="bold" href="#">{{ comment.author.first_name }}</a> {{ comment.text }}
+                                                        </p>
                                                     </div>
                                                 {% endfor %}
                                             </div>
-                                            {% endif %}
 
+                                            <!-- JavaScript для скрытия/показа комментариев -->
+                                            <script>
+                                                // Получаем чекбокс и контейнер с комментариями
+                                                const checkbox = document.getElementById('toggle-comments-{{ item.id }}');
+                                                const commentsContainer = document.getElementById('comments-container-{{ item.id }}');
+
+                                                // Функция для скрытия или отображения комментариев в зависимости от состояния чекбокса
+                                                checkbox.addEventListener('change', function() {
+                                                    if (checkbox.checked) {
+                                                        commentsContainer.style.display = 'block';  // Показываем комментарии
+                                                    } else {
+                                                        commentsContainer.style.display = 'none';  // Скрываем комментарии
+                                                    }
+                                                });
+
+                                                // Изначально скрываем комментарии, если чекбокс не выбран
+                                                if (!checkbox.checked) {
+                                                    commentsContainer.style.display = 'none';
+                                                }
+                                            </script>
                                             <!-- Форма для добавления комментариев -->
                                             <form class="comment-form" data-item-id="{{ item.id }}" method="post" action="{% url 'add-comment' pk=item.pk %}">
                                                 {% csrf_token %}

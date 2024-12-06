@@ -40,7 +40,7 @@ class ProfileView(DetailView):
 
         context.update({
             'user': user,
-            'avatar_image': user.avatar_image.url if user.avatar_image else None,
+            'avatar_image': user.avatar_image.url,
             'followers_count': followers_count,
             'following_count': following_count,
             'post_count': post_count,

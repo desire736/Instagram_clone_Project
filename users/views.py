@@ -1,6 +1,7 @@
 from lib2to3.fixes.fix_input import context
 
 from django.shortcuts import render, redirect
+from django.template.context_processors import request
 from django.views.generic.base import TemplateView, View
 from django.contrib.auth import login, logout
 from pyexpat.errors import messages
@@ -27,7 +28,7 @@ class MakeRegisterView(View):
         )
         user.save()
         login(request, user)
-        return redirect('profile')
+        return redirect('profile', pk=request.user.pk)
 
 class LoginerView(TemplateView):
     template_name = 'login.html'
